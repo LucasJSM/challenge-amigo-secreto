@@ -1,125 +1,170 @@
-let listaAmigos = [];
+let friendsList = [];
+let drawnFriends = [];
 
-document.querySelector(".button-add").addEventListener("click", adicionarAmigo);
+document.querySelector(".button-add").addEventListener("click", addFriend);
 
-document.querySelector("#amigo").addEventListener("keypress", function (event) {
-  if (event.key === "Enter") {
-    adicionarAmigo();
-  }
-});
+document
+  .querySelector("#friend")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      addFriend();
+    }
+  });
 
-function adicionarAmigo() {
-  const campoNome = document.querySelector("#amigo");
-  const nome = campoNome.value.trim();
+function resetList() {
+  friendsList = [];
+  drawnFriends = [];
+  document.querySelector("#friendsList").innerHTML = "";
+  document.querySelector("#result").innerHTML = "";
+  document.querySelector("#friend").value = "";
+  document.querySelector("#friend").focus();
+}
 
-  if (nome === "") {
+function addFriend() {
+  const nameField = document.querySelector("#friend");
+  const name = nameField.value.trim();
+
+  if (name === "") {
     return alert("Digite um nome válido");
   }
 
-  const amigo = {
-    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-    nome: nome,
+  // Verifica nome duplicado (case-insensitive)
+  const nameExists = friendsList.some(
+    (friend) => friend.name.toLowerCase() === name.toLowerCase()
+  );
+  if (nameExists) {
+    return alert("Este nome já foi adicionado!");
+  }
+
+  const friend = {
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+    name: name,
   };
 
-  listaAmigos.push(amigo);
-  atualizarListaAmigos(amigo);
+  friendsList.push(friend);
+  showFriendsList(friend);
 
-  campoNome.value = "";
-  campoNome.focus();
+  nameField.value = "";
+  nameField.focus();
 
   return;
 }
 
-function atualizarListaAmigos(amigo) {
-  const lista = document.querySelector("#listaAmigos");
+function showFriendsList(friend) {
+  const list = document.querySelector("#friendsList");
   const item = document.createElement("li");
-  item.id = amigo.id;
+  item.id = friend.id;
 
-  const nomeSpan = document.createElement("span");
-  nomeSpan.textContent = amigo.nome;
-  nomeSpan.className = "nome-amigo";
+  const nameSpan = document.createElement("span");
+  nameSpan.textContent = friend.name;
+  nameSpan.className = "friend-name";
 
-  // container para os botões
   const buttonGroup = document.createElement("div");
   buttonGroup.className = "button-group";
-  buttonGroup.appendChild(criarBotaoAlterar(amigo));
-  buttonGroup.appendChild(criarBotaoRemover(amigo.id));
+  buttonGroup.appendChild(createEditButton(friend));
+  buttonGroup.appendChild(createRemoveButton(friend.id));
 
-  item.appendChild(nomeSpan);
+  item.appendChild(nameSpan);
   item.appendChild(buttonGroup);
-  lista.appendChild(item);
+  list.appendChild(item);
 
-  document.querySelector("#resultado").innerHTML = "";
+  document.querySelector("#result").innerHTML = "";
 
   return;
 }
 
-function removerAmigo(id) {
-  listaAmigos = listaAmigos.filter((amigo) => amigo.id !== id);
+function removeFriend(id) {
+  friendsList = friendsList.filter((friend) => friend.id !== id);
   document.getElementById(id)?.remove();
-  document.querySelector("#resultado").innerHTML = "";
+  document.querySelector("#result").innerHTML = "";
+  document.querySelector("#friend").focus();
 
   return;
 }
 
-function criarBotaoRemover(id) {
-  const botaoRemover = document.createElement("button");
-  botaoRemover.textContent = "X";
-  botaoRemover.className = "button-remove";
-  botaoRemover.addEventListener("click", function () {
-    removerAmigo(id);
+function createRemoveButton(id) {
+  const removeButton = document.createElement("button");
+  removeButton.textContent = "X";
+  removeButton.className = "button-remove";
+  removeButton.addEventListener("click", function () {
+    removeFriend(id);
   });
 
-  return botaoRemover;
+  return removeButton;
 }
 
-function alterarNome(amigo) {
-  const novoNome = prompt("Digite o novo nome:", amigo.nome);
+function editFriend(friend) {
+  const newName = prompt("Digite o novo nome:", friend.name);
 
-  if (novoNome && novoNome.trim() !== "") {
-    amigo.nome = novoNome.trim();
-    const item = document.getElementById(amigo.id);
-    item.querySelector(".nome-amigo").textContent = amigo.nome;
+  if (newName && newName.trim() !== "") {
+    const trimmedNewName = newName.trim();
+
+    const nameExists = friendsList.some(
+      (f) =>
+        f.id !== friend.id &&
+        f.name.toLowerCase() === trimmedNewName.toLowerCase()
+    );
+
+    if (nameExists) {
+      alert("Este nome já foi adicionado!");
+    } else {
+      friend.name = trimmedNewName;
+      const item = document.getElementById(friend.id);
+      item.querySelector(".friend-name").textContent = friend.name;
+    }
   } else {
     alert("Nome inválido!");
   }
 
-  document.querySelector("#resultado").innerHTML = "";
+  document.querySelector("#result").innerHTML = "";
+  document.querySelector("#friend").focus();
 
   return;
 }
 
-function criarBotaoAlterar(amigo) {
-  const botaoAlterar = document.createElement("button");
-  botaoAlterar.className = "button-edit";
+function createEditButton(friend) {
+  const editButton = document.createElement("button");
+  editButton.className = "button-edit";
 
   const icon = document.createElement("img");
   icon.src = "./assets/pencil.svg";
   icon.className = "icon-edit";
 
-  botaoAlterar.appendChild(icon);
+  editButton.appendChild(icon);
 
-  botaoAlterar.addEventListener("click", function () {
-    alterarNome(amigo);
+  editButton.addEventListener("click", function () {
+    editFriend(friend);
   });
 
-  return botaoAlterar;
+  return editButton;
 }
 
-function sortearAmigo() {
-  if (listaAmigos.length > 1) {
-    const amigoSorteado =
-      listaAmigos[Math.floor(Math.random() * listaAmigos.length)];
-
-    const resultado = document.querySelector("#resultado");
-    resultado.innerHTML = "";
-
-    const item = document.createElement("li");
-    item.textContent = amigoSorteado.nome;
-    resultado.appendChild(item);
-  } else {
-    alert("Adicione mais amigos para sortear!");
+function drawRandomFriend() {
+  if (friendsList.length <= 1) {
+    alert("Adicione amigos para sortear!");
+    return;
   }
+
+  const availableFriends = friendsList.filter(
+    (friend) => !drawnFriends.includes(friend.id)
+  );
+
+  if (availableFriends.length === 0) {
+    alert("Todos os amigos já foram sorteados! Reiniciando...");
+    resetList();
+    return;
+  }
+
+  const selectedFriend =
+    availableFriends[Math.floor(Math.random() * availableFriends.length)];
+  drawnFriends.push(selectedFriend.id);
+
+  const result = document.querySelector("#result");
+  result.innerHTML = "";
+
+  const item = document.createElement("li");
+  item.textContent = selectedFriend.name;
+  result.appendChild(item);
 
   return;
 }
