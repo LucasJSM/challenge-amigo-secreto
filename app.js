@@ -1,4 +1,12 @@
-const listaAmigos = [];
+let listaAmigos = [];
+
+const botaoAdicionar = document.querySelector('.button-add');
+botaoAdicionar.addEventListener('click', adicionarAmigo);
+document.querySelector('#amigo').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    adicionarAmigo();
+  }
+});
 
 function adicionarAmigo() {
   const campoNome = document.querySelector("#amigo");
@@ -8,9 +16,13 @@ function adicionarAmigo() {
     return alert("Digite um nome válido");
   }
 
-  listaAmigos.push(nome);
+  const amigo = {
+    id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    nome: nome
+  };
 
-  atualizarListaAmigos(nome);
+  listaAmigos.push(amigo);
+  atualizarListaAmigos(amigo);
 
   campoNome.value = "";
   campoNome.focus();
@@ -18,35 +30,52 @@ function adicionarAmigo() {
   return;
 }
 
-function atualizarListaAmigos(nome) {
+function atualizarListaAmigos(amigo) {
   const lista = document.querySelector("#listaAmigos");
+  const item = document.createElement('li');
 
-  if (nome) {
-    const item = document.createElement("li");
+  item.textContent = amigo.nome;
+  item.id = amigo.id;
 
-    item.textContent = nome;
-    lista.appendChild(item);
-  } else {
-    for(let i = 0; i < listaAmigos.length; i++) {
-      const item = document.createElement('li');
-      item.textContent = listaAmigos[i];
-      lista.appendChild(item);
-    }
-  }
+  item.appendChild(criarBotaoRemover(amigo.id));
+  lista.appendChild(item);
 
+  const resultado = document.querySelector('#resultado');
+  resultado.innerHTML = '';
+  
   return;
 }
 
+function removerAmigo(id) {
+  listaAmigos = listaAmigos.filter(amigo => amigo.id !== id);
+
+  document.querySelector('#listaAmigos').innerHTML = '';
+  listaAmigos.forEach(amigo => atualizarListaAmigos(amigo));
+}
+
+function criarBotaoRemover(id) {
+  const botaoRemover =  document.createElement('button');
+  botaoRemover.textContent = 'X';
+  botaoRemover.className = 'button-remove';
+  botaoRemover.addEventListener('click', function() { 
+    removerAmigo(id) 
+  });
+  
+  return botaoRemover;
+}
+
 function sortearAmigo() {
-  if(listaAmigos.length > 0) {
+  if(listaAmigos.length > 1) {
     const amigoSorteado = listaAmigos[Math.floor(Math.random() * listaAmigos.length)];
 
     const resultado = document.querySelector('#resultado');
-    resultado.innerHTML = ''; // limpa o resultado anterior
+    resultado.innerHTML = '';
     
     const item = document.createElement('li');
-    item.textContent = amigoSorteado;
+    item.textContent = amigoSorteado.nome;
     resultado.appendChild(item);
+  } else {
+    alert('Adicione mais amigos para sortear!');
   }
 
   return;

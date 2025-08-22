@@ -125,6 +125,10 @@ button {
     background-color: #a1a1a1;
 }
 
+.button-remove:hover {
+    background-color: #a1a1a1;
+}
+
 /* Listas */
 ul {
     list-style-type: none;
@@ -132,6 +136,38 @@ ul {
     font-family: "Inter", sans-serif;
     font-size: 18px;
     margin: 20px 0;
+    padding: 0;
+    width: 100%;
+    max-width: 600px;
+}
+
+ul li {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; /* distribui o nome e botão */
+    align-items: flex-start;
+    word-break: break-word;
+    padding: 10px 20px;
+    margin: 8px 0;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Botão de remover dentro da lista */
+ul li button {
+    background-color: var(--color-button);
+    color: var(--color-white);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: "Inter", sans-serif;
+}
+
+ul li button:hover {
+    background-color: var(--color-button-hover);
 }
 
 .result-list {
