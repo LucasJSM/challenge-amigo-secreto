@@ -1,13 +1,53 @@
-<h1>Challenge Amigo Secreto</h1>
+# 🎁 Amigo Secreto
 
-<h2>Objetivo</h2>
+Aplicação web desenvolvida em **HTML, CSS e JavaScript** para organizar e sortear amigos de forma simples e interativa.
 
-<p>
-  O objetivo principal deste desafio é desenvolver habilidades em lógica de programação, por isso fornecemos o HTML e CSS já preparados. Dessa forma, você pode se concentrar exclusivamente em construir a lógica do código JavaScript, aplicando conceitos-chave como funções, arrays, condicionais e variáveis. Isso permitirá que você foque em resolver o problema e melhore o raciocínio lógico, sem se preocupar com a estrutura visual do projeto.
-</p>
+Este projeto foi criado como parte do **Challenge Oracle Next Education (ONE) + Alura**.
 
-<h2>Arquivos</h2>
+---
 
-<p>
-  Os arquivos base do projeto estão em: <a href="https://github.com/Oracle-Next-Education/challenge-amigo-secreto_pt/archive/refs/heads/main.zip" target="_blank">Challenge Amigo Secreto</a>
-</p>
+## 🚀 Demonstração
+
+![Demonstração do projeto](./assets/project.png)
+
+---
+
+## ✨ Funcionalidades
+
+- ➕ Adicionar amigos
+- 📝 Editar nomes já cadastrados
+- ❌ Remover amigos da lista
+- 🎲 Sortear amigos aleatoriamente
+- 🔄 Reset automático da lista quando todos já foram sorteados
+
+---
+
+## 🛠️ Tecnologias utilizadas
+
+- **HTML5** → estrutura da aplicação
+- **CSS3** → estilização e responsividade
+- **JavaScript (ES6+)** → manipulação do DOM, eventos e lógica do sorteio
+
+---
+
+## 📦 Como executar o projeto
+
+1. Clone este repositório:
+  ```bash
+    git clone https://github.com/seuusuario/amigo-secreto.git
+  ```
+
+2. Acesse a pasta do projeto:
+  ```bash
+    cd amigo-secreto
+  ```
+3. Abra o arquivo `index.html` no navegador.
+
+## 📚 Sobre o Challenge ONE
+
+Este projeto foi desenvolvido como parte do programa Oracle Next Education (ONE) em parceria com a Alura.
+O objetivo do desafio é aplicar os conceitos de lógica de programação, manipulação de DOM e boas práticas de desenvolvimento web.
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
