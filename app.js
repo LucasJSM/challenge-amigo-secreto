@@ -28,10 +28,10 @@ function addFriend() {
     return alert("Digite um nome válido");
   }
 
-  // Verifica nome duplicado (case-insensitive)
-  const nameExists = friendsList.some(
-    (friend) => friend.name.toLowerCase() === name.toLowerCase()
-  );
+  const nameExists = friendsList.some((friend) => {
+    friend.name.toLowerCase() === name.toLowerCase()
+  });
+
   if (nameExists) {
     return alert("Este nome já foi adicionado!");
   }
@@ -99,11 +99,10 @@ function editFriend(friend) {
   if (newName && newName.trim() !== "") {
     const trimmedNewName = newName.trim();
 
-    const nameExists = friendsList.some(
-      (f) =>
+    const nameExists = friendsList.some((f) => {
         f.id !== friend.id &&
         f.name.toLowerCase() === trimmedNewName.toLowerCase()
-    );
+    });
 
     if (nameExists) {
       alert("Este nome já foi adicionado!");
@@ -155,8 +154,7 @@ function drawRandomFriend() {
     return;
   }
 
-  const selectedFriend =
-    availableFriends[Math.floor(Math.random() * availableFriends.length)];
+  const selectedFriend = availableFriends[Math.floor(Math.random() * availableFriends.length)];
   drawnFriends.push(selectedFriend.id);
 
   const result = document.querySelector("#result");
